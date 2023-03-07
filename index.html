@@ -101,50 +101,10 @@
   let options = {};
   
   log('Requesting Bluetooth Device...');
-  // log('with ' + JSON.stringify(options));
-  //const device = await navigator.bluetooth.requestDevice({ filters: [{name: 'MindWave Mobile', service: '039afff0-2c94-11e3-9e06-0002a5d5c51b'}]})
-  // .then(device => {
-  //   log('> Name:             ' + device.gatt.name);
-  //   log('> Id:               ' + device.id);
-  //   log('> Connected:        ' + device.gatt.connected);
-  // })
-  // .then(device =>  {
-  //   device.gatt.connect();
-  //   log('> Attempting to Connect');
-  // })
-  // .catch(error => {
-  //   log('Argh! ' + error);
-  // });
-
-  // const server = await device.gatt.connect()
-  // console.log("mi sono connesso")
-  // .then(server => {
-  //   // Getting Battery Service…
-  //   return server.getPrimaryService('039afff0-2c94-11e3-9e06-0002a5d5c51b');
-  //   console.log("ho il service")
-  // })
-  // .then(service => {
-  //   // Getting Battery Level Characteristic…
-  //   return service.getCharacteristic('039affa0-2c94-11e3-9e06-0002a5d5c51b');
-  //   console.log("ho la charateristic")
-  // })
-  // .then(characteristic => {
-  //   // Reading Battery Level…
-  //   return characteristic.readValue();
-  //   console.log("ho il value")
-  // })
-  // .then(value => {
-  //   console.log(`Battery percentage is ${value.getUint8(0)}`);
-  // })
-  // .catch(error => { console.error(error); });
-  //   }
-
-
-
 
     try {
     log('Requesting Bluetooth Device...');
-    const device = await navigator.bluetooth.requestDevice({ filters: [{name: 'MindWave Mobile'}], optionalServices: ['0000180a-0000-1000-8000-00805f9b34fb']});
+    const device = await navigator.bluetooth.requestDevice({ filters: [{name: 'MindWave Mobile'}]});
   
     log('Connecting to GATT Server...');
     const server = await device.gatt.connect();
@@ -152,30 +112,30 @@
 
 
     log('Getting Service...');
-    const service = await server.getPrimaryService('0000180a-0000-1000-8000-00805f9b34fb');
+    const services = await server.getPrimaryServices();
     console.log("ho il service");
 
     log('Getting Characteristics...');
     
     //let characteristics;
-    
-    const characteristics = await service.getCharacteristics();
-    console.log("ho la charateristic");
-    while(true){
-      for (c of characteristics){
-        log('>> Characteristic: ' + c.uuid ); 
-      // while (true){
-        const ch = await service.getCharacteristic(c.uuid)
-      //   log('> Characteristic: ' + c.uuid)
-        const signal = await ch.readValue()
-        if (c.uuid == '00002a2a-0000-1000-8000-00805f9b34fb'){
-          console.log('Value: ' + ch.readValue())
-        }else{
-          log('> Value: ' + signal.getUint8(0)) 
+    for (service in services){
+      const characteristics = await service.getCharacteristics();
+      console.log("ho la charateristic");
+      while(true){
+        for (c of characteristics){
+          log('>> Characteristic: ' + c.uuid ); 
+        // while (true){
+          const ch = await service.getCharacteristic(c.uuid)
+        //   log('> Characteristic: ' + c.uuid)
+          const signal = await ch.readValue()
+          if (c.uuid == '00002a2a-0000-1000-8000-00805f9b34fb'){
+            console.log('Value: ' + ch.readValue())
+          }else{
+            log('> Value: ' + signal.getUint8(0)) 
+          }
         }
-      }
-    } 
-    
+      } 
+    }
   } catch(error) {
     log('Argh! ' + error);
   }

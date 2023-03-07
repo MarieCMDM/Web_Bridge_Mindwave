@@ -118,7 +118,7 @@
     log('Getting Characteristics...');
     
     //let characteristics;
-    for (service in services){
+    for (service of services){
       const characteristics = await service.getCharacteristics();
       console.log("ho la charateristic");
       while(true){

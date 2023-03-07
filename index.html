@@ -121,7 +121,7 @@
     for (service of services){
       const characteristics = await service.getCharacteristics();
       console.log("ho la charateristic");
-      while(true){
+      // while(true){
         for (c of characteristics){
           log('>> Characteristic: ' + c.uuid ); 
         // while (true){
@@ -134,7 +134,7 @@
             log('> Value: ' + signal.getUint8(0)) 
           }
         }
-      } 
+      // } 
     }
   } catch(error) {
     log('Argh! ' + error);

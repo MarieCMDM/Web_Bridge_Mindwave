@@ -1,0 +1,35 @@
+Requesting any Bluetooth Device...
+Connecting to GATT Server...
+Getting Services...
+Getting Characteristics...
+> Service: 039afff0-2c94-11e3-9e06-0002a5d5c51b
+>> Characteristic: 039afff8-2c94-11e3-9e06-0002a5d5c51b [READ, NOTIFY]
+>> Characteristic: 039affa0-2c94-11e3-9e06-0002a5d5c51b [WRITE]
+>> Characteristic: 039afff4-2c94-11e3-9e06-0002a5d5c51b [NOTIFY]
+>> Characteristic: 039affd3-2c94-11e3-9e06-0002a5d5c51b [READ, WRITE]
+> Service: 0000180a-0000-1000-8000-00805f9b34fb
+>> Characteristic: 00002a29-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a24-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a27-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a26-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a28-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a23-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a2a-0000-1000-8000-00805f9b34fb [READ]
+>> Characteristic: 00002a50-0000-1000-8000-00805f9b34fb [READ]
+Argh! NotFoundError: No Characteristics found in service.
+
+
+ Characteristic: 00002a29-0000-1000-8000-00805f9b34fb
+> Value: 78
+>> Characteristic: 00002a24-0000-1000-8000-00805f9b34fb
+> Value: 118
+>> Characteristic: 00002a27-0000-1000-8000-00805f9b34fb
+> Value: 49
+>> Characteristic: 00002a26-0000-1000-8000-00805f9b34fb
+> Value: 49
+>> Characteristic: 00002a28-0000-1000-8000-00805f9b34fb
+> Value: 78
+>> Characteristic: 00002a23-0000-1000-8000-00805f9b34fb
+> Value: 0
+>> Characteristic: 00002a2a-0000-1000-8000-00805f9b34fb
+Argh! RangeError: Offset is outside th

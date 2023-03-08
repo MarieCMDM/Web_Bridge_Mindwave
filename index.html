@@ -28,19 +28,18 @@
   <script> async function onButtonClick() {
     try {
       document.querySelector('button').addEventListener('click', async () => {
-        // Prompt user to select any serial port.
-        const port = await navigator.serial.requestPort();
+      // Prompt user to select any serial port.
+      const port = await navigator.serial.requestPort();
       
-        console.log('richieste porte');
+      console.log('richieste porte');
       // Get all serial ports the user has previously granted the website access to.
       const ports = await navigator.serial.getPorts();
-      console.log('prese porte');
+  
       const { usbProductId, usbVendorId } = port.getInfo();
-      console.log('prese info');
+     
       console.log(usbProductId, usbVendorId)
       // Wait for the serial port to open.
       await port.open({ baudRate: 57600 });
-      console.log('aperta porta');
 
       while (port.readable) {
         const reader = port.readable.getReader();
@@ -58,7 +57,7 @@
             }
           }
         } catch (error) {
-          // TODO: Handle non-fatal read error.
+          console.log('smeni')
         }
       }
     });

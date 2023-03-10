@@ -65,6 +65,8 @@
       await port.open({ baudRate: 57600 });
       while (port.readable) {
         const reader = port.readable.getReader();
+        document.getElementById("mindwaveConnection").style.display = "none"; 
+        document.getElementById("userInteraction").style.display = "flex";
         try {
           while (true) {
             const { value, done } = await reader.read();
@@ -91,10 +93,13 @@
   </script>
 
   <script>
+    var form = document.getElementById("userInfo");
     function submitForm(event) {
-      alert(event.target.elements.session.value)
-      return false;
+      event.preventDefault();
+      socket.send(event.target.elements.session.value);
+      closeDiv()
     }
+    form.addEventListener('submit', submitForm);
   </script>
 
   <script>
@@ -103,6 +108,12 @@
       document.getElementById("mindwaveConnection").style.display = "flex"; 
     }
   </script>
+
+<script>
+  function eventTarget() {
+    socket.send("-------------------- Event triggered --------------------");
+  }
+</script>
 
   <script>
     function closeStreaming() {

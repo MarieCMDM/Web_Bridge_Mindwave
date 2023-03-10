@@ -39,12 +39,12 @@
     <form onsubmit="submitForm(event)">
       <label for="fname">Session name:</label>
       <input id ="fname" name="session"/>
-      <button type="button" onclick="closeDiv()">Submit</button>
+      <button id="submit" onclick="closeDiv()">Submit</button>
     </form>
   </div>
 
   <div id="mindwaveConnection">
-    <button id="button" onclick="onButtonClick()">Connect to Mindwave Mobile device</button>
+    <button id="buttonMM" onclick="onButtonClick()">Connect to Mindwave Mobile device</button>
   </div>
 
   <div id="userInteraction">
@@ -55,7 +55,7 @@
 
   <script> async function onButtonClick() {
     try {
-      document.querySelector('button').addEventListener('click', async () => {
+      document.querySelector('#buttonMM').addEventListener('click', async () => {
       // Prompt user to select any serial port.
       const port = await navigator.serial.requestPort();
       console.log('richieste porte');
@@ -82,9 +82,7 @@
           console.log('smeni')
         }
       }
-    });
-      document.getElementById("mindwaveConnection").style.display = "none"; 
-      document.getElementById("userInteraction").style.display = "flex";
+    }); 
       console.log('test');
     } catch (error) {
       console.log('Argh! ' + error);

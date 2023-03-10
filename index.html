@@ -7,6 +7,8 @@
   <meta name="description" content="Sample illustrating the use of Web Bluetooth / Device Info.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Isonlab / Mindwave Mobile</title>
+  <link rel="icon" href="https://www.isonlab.it/wp-content/uploads/2019/10/cropped-favicon-isonlab-300ppi-32x32.png" sizes="32x32" />
+  <link rel="stylesheet" href="./style.css">
   <script>
     // Add a global error event listener early on in the page load, to help ensure that browsers
     // which don't support specific functionality still end up displaying a meaningful message.
@@ -21,39 +23,48 @@
 </head>
 
 <body>
-  <h1>Isonlab - Mindwave Mobile </h1>
-
   <script>
     // Create WebSocket connection.
-    const socket = new WebSocket('ws://localhost:8080');
-
+    const socket = new WebSocket('ws://192.168.1.233:9090');
     // Connection opened
     socket.addEventListener('open', (event) => {
         socket.send('Hello Server!');
     });
   </script>
+  <div id="title">
+    <h1 >Isonlab - Mindwave Mobile </h1>
+  </div>
 
-  <button id="button" onclick="onButtonClick()">Connect to Mindwave Mobile device</button>
+  <div id="userInfo">
+    <form onsubmit="submitForm(event)">
+      <label for="fname">Session name:</label>
+      <input id ="fname" name="session"/>
+      <button type="button" onclick="closeDiv()">Submit</button>
+    </form>
+  </div>
+
+  <div id="mindwaveConnection">
+    <button id="button" onclick="onButtonClick()">Connect to Mindwave Mobile device</button>
+  </div>
+
+  <div id="userInteraction">
+    <button id="event" onClick="eventTarget()">Event</button>
+    <button id="close" onclick="closeStreaming()">Stop</button>
+  </div>
+
 
   <script> async function onButtonClick() {
     try {
       document.querySelector('button').addEventListener('click', async () => {
       // Prompt user to select any serial port.
       const port = await navigator.serial.requestPort();
-      
       console.log('richieste porte');
       // Get all serial ports the user has previously granted the website access to.
       const ports = await navigator.serial.getPorts();
-  
-      const { usbProductId, usbVendorId } = port.getInfo();
-     
-      console.log(usbProductId, usbVendorId)
       // Wait for the serial port to open.
       await port.open({ baudRate: 57600 });
-
       while (port.readable) {
         const reader = port.readable.getReader();
-
         try {
           while (true) {
             const { value, done } = await reader.read();
@@ -64,6 +75,7 @@
             }
             if (value) {
               console.log(value);
+              socket.send(value);
             }
           }
         } catch (error) {
@@ -71,15 +83,35 @@
         }
       }
     });
-    
+      document.getElementById("mindwaveConnection").style.display = "none"; 
+      document.getElementById("userInteraction").style.display = "flex";
       console.log('test');
     } catch (error) {
       console.log('Argh! ' + error);
     }
-  }
-      
+  }   
+  </script>
+
+  <script>
+    function submitForm(event) {
+      alert(event.target.elements.session.value)
+      return false;
+    }
+  </script>
+
+  <script>
+    function closeDiv(){
+      document.getElementById("userInfo").style.display = "none"; 
+      document.getElementById("mindwaveConnection").style.display = "flex"; 
+    }
+  </script>
+
+  <script>
+    function closeStreaming() {
+      document.getElementById("userInfo").style.display = "flex"; 
+      document.getElementById("userInteraction").style.display = "none"; 
+    }
   </script>
 
 </body>
-
 </html>

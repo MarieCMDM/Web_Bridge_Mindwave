@@ -58,7 +58,6 @@
       document.querySelector('#buttonMM').addEventListener('click', async () => {
       // Prompt user to select any serial port.
       const port = await navigator.serial.requestPort();
-      console.log('richieste porte');
       // Get all serial ports the user has previously granted the website access to.
       const ports = await navigator.serial.getPorts();
       // Wait for the serial port to open.
@@ -71,12 +70,10 @@
           while (true) {
             const { value, done } = await reader.read();
             if (done) {
-              // Allow the serial port to be closed later.
               reader.releaseLock();
               break;
             }
             if (value) {
-              console.log(value);
               socket.send(value);
             }
           }
@@ -109,16 +106,17 @@
     }
   </script>
 
-<script>
-  function eventTarget() {
-    socket.send("-------------------- Event triggered --------------------");
-  }
-</script>
+  <script>
+    function eventTarget() {
+      socket.send("-------------------- Event triggered --------------------");
+    }
+  </script>
 
   <script>
     function closeStreaming() {
-      document.getElementById("userInfo").style.display = "flex"; 
-      document.getElementById("userInteraction").style.display = "none"; 
+      socket.send('closing');
+      socket.close(1000);
+      location.reload();
     }
   </script>
 

@@ -31,6 +31,7 @@
         socket.send('Hello Server!');
     });
   </script>
+
   <div id="title">
     <h1 >Isonlab - Mindwave Mobile </h1>
   </div>
@@ -53,65 +54,60 @@
   </div>
 
 
-  <script> async function onButtonClick() {
-    try {
-      // Prompt user to select any serial port.
-      const port = await navigator.serial.requestPort();
-      document.getElementById("buttonMM").style.display = "none"
-      // Get all serial ports the user has previously granted the website access to.
-      const ports = await navigator.serial.getPorts();
-      // Wait for the serial port to open.
-      await port.open({ baudRate: 57600 });
-      while (port.readable) {
-        const reader = port.readable.getReader();
+  <script> 
+    async function onButtonClick() {
+      try {
+        // Prompt user to select any serial port.
+        const port = await navigator.serial.requestPort();
+        document.getElementById("buttonMM").style.display = "none"
+        // Get all serial ports the user has previously granted the website access to.
+        const ports = await navigator.serial.getPorts();
+        // Wait for the serial port to open.
+        await port.open({ baudRate: 57600 });
+        // Start session 
+        socket.send(sessionName);
         document.getElementById("mindwaveConnection").style.display = "none"; 
         document.getElementById("userInteraction").style.display = "flex";
-        try {
-          while (true) {
-            const { value, done } = await reader.read();
-            if (done) {
-              reader.releaseLock();
-              break;
+        while (port.readable) {
+          const reader = port.readable.getReader();
+          try {
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) {
+                reader.releaseLock();
+                break;
+              }
+              if (value) {
+                socket.send(value);
+              }
             }
-            if (value) {
-              socket.send(value);
-            }
+          } catch (error) {
+            console.log('smeni')
           }
-        } catch (error) {
-          console.log('smeni')
         }
+      } catch (error) {
+        document.getElementById("buttonMM").style.display = "block"
+        console.log('Argh! ' + error);
       }
-    } catch (error) {
-      document.getElementById("buttonMM").style.display = "flex"
-      console.log('Argh! ' + error);
-    }
-  }   
-  </script>
+    }   
 
-  <script>
     var form = document.getElementById("userInfo");
     function submitForm(event) {
       event.preventDefault();
-      socket.send(event.target.elements.session.value);
+      sessionName = event.target.elements.session.value
       closeDiv()
     }
     form.addEventListener('submit', submitForm);
-  </script>
 
-  <script>
     function closeDiv(){
       document.getElementById("userInfo").style.display = "none"; 
       document.getElementById("mindwaveConnection").style.display = "flex"; 
     }
-  </script>
 
-  <script>
     function eventTarget() {
       socket.send("-------------------- Event triggered --------------------");
     }
-  </script>
 
-  <script>
     function closeStreaming() {
       socket.send('closing');
       socket.close(1000);

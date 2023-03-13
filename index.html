@@ -54,17 +54,16 @@
 
 
   <script> async function onButtonClick() {
-    document.getElementById("alarmmsg").innerHTML = msg;
     try {
       // Prompt user to select any serial port.
       const port = await navigator.serial.requestPort();
+      document.getElementById("buttonMM").style.display = "none"
       // Get all serial ports the user has previously granted the website access to.
       const ports = await navigator.serial.getPorts();
       // Wait for the serial port to open.
       await port.open({ baudRate: 57600 });
       while (port.readable) {
         const reader = port.readable.getReader();
-        document.getElementById("alarmmsg").innerHTML = '';
         document.getElementById("mindwaveConnection").style.display = "none"; 
         document.getElementById("userInteraction").style.display = "flex";
         try {
@@ -83,6 +82,7 @@
         }
       }
     } catch (error) {
+      document.getElementById("buttonMM").style.display = "flex"
       console.log('Argh! ' + error);
     }
   }   
